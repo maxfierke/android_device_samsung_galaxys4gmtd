@@ -13,6 +13,7 @@ on init
     # We will create our own ril-daemon service in class 'core' because the
     # rild doesn't like being killed. (During device encryption.)
     stop ril-daemon
+    stop aries-ril-daemon
 
 on boot
     mount debugfs /sys/kernel/debug /sys/kernel/debug
@@ -103,8 +104,6 @@ service aries-ril-daemon /system/bin/rild
     socket rild-debug stream 660 radio system
     user root
     group radio cache inet misc audio log
-
-stop aries-ril-daemon
 
 on property:init.svc.bootanim=running
     start aries-ril-daemon
