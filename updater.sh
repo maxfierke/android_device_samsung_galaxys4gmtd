@@ -135,7 +135,7 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
             /tmp/busybox cp -R /sdcard/backup/efs /
             /tmp/busybox umount -l /efs
         # older herring backup
-        elif /tmp/busybox test -e /sdcard/backup/efs.tar ; then
+        elif /tmp/busybox test -d /sdcard/backup -a -e /sdcard/backup/efs.tar ; then
             cd /sdcard/backup
             if /tmp/busybox test -e efs.tar.md5 ; then
                 /tmp/busybox md5sum -c efs.tar.md5
