@@ -64,7 +64,7 @@ if /tmp/busybox test -e /dev/block/bml7 ; then
     # write new kernel to boot partition
     /tmp/flash_image boot /tmp/boot.img
     if [ "$?" != "0" ] ; then
-        exit 3
+        exit 2
     fi
     /tmp/busybox sync
 
@@ -91,8 +91,8 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
         /tmp/busybox umount -l /dev/block/mtdblock6
         /tmp/erase_image radio
         if ! /tmp/busybox mount -t yaffs2 /dev/block/mtdblock6 /radio ; then
-            /tmp/busybox echo "Cannot copy modem.bin to radio partition."
-            exit 5
+            /tmp/busybox echo "Cannot mount /radio after erasing the partition."
+            exit 3
         else
             /tmp/busybox cp /tmp/modem.bin /radio/modem.bin
             /tmp/busybox sync
@@ -144,18 +144,18 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
                     /tmp/busybox tar xf /sdcard/backup/efs.tar
                 else
                     /tmp/busybox echo "/sdcard/backup/efs.tar MD5 Checksum failed!"
-                    exit 7
+                    exit 4
                 fi
            else
                /tmp/busybox echo "/sdcard/backup/efs.tar.md5 not found!"
-               exit 8
+               exit 5
            fi
+        else
+            /tmp/busybox echo "Unable to restore efs!"
+            exit 6
         fi
         /tmp/busybox sync
         /tmp/busybox umount -l /efs
-    else
-        /tmp/busybox echo "Cannot restore efs."
-        exit 9
     fi
 
     exit 0
