@@ -84,13 +84,7 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
     /tmp/busybox mkdir -p /radio
 
     # make sure radio partition is mounted
-    if ! /tmp/busybox grep -q /radio /proc/mounts ; then
-        /tmp/busybox umount -l /dev/block/mtdblock6
-        if ! /tmp/busybox mount -t yaffs2 /dev/block/mtdblock6 /radio ; then
-            /tmp/busybox echo "Cannot mount radio partition."
-            exit 5
-        fi
-    fi
+    check_mount /radio /dev/block/mtdblock6 yaffs2
 
     # if modem.bin doesn't exist on radio partition, format the partition and copy it
     if ! /tmp/busybox test -e /radio/modem.bin ; then
