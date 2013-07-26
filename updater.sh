@@ -111,12 +111,12 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
 
     # unmount system and data (recovery seems to expect system to be unmounted)
     /tmp/busybox umount -l /system
-    /tmp/busybox umount -l /data
+    #/tmp/busybox umount -l /data
 
     # erase system
     /tmp/erase_image system
     # erase userdata
-    /tmp/erase_image userdata
+    #/tmp/erase_image userdata
 
     # restart into recovery so the user can install further packages before booting
     #/tmp/busybox touch /cache/.startrecovery
