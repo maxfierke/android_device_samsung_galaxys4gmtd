@@ -121,19 +121,14 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
     # restart into recovery so the user can install further packages before booting
     #/tmp/busybox touch /cache/.startrecovery
 
-    # prep for efs restore
-    if /tmp/busybox test -e /sdcard/backup/efs/root/afs/settings/nv_data.bin || \
-        /tmp/busybox test -e /sdcard/backup/efs.tar && /tmp/busybox test -e /sdcard/backup/efs.tar.md5 ; then
+    # 
+    check_mount /efs /dev/block/mtdblock4 yaffs2
+    if ! /tmp/busybox find /efs -name 'nv_data\.bin' ; then
         /tmp/busybox umount -l /efs
         /tmp/erase_image efs
         /tmp/busybox mkdir -p /efs
-
-        if ! /tmp/busybox grep -q /efs /proc/mounts ; then
-            if ! /tmp/busybox mount -t yaffs2 /dev/block/mtdblock4 /efs ; then
-                /tmp/busybox echo "Cannot mount efs."
-                exit 6
-            fi
-        fi
+        
+        check_mount /efs /dev/block/mtdblock4 yaffs2
 
         # newer aries backup
         if /tmp/busybox test -d /sdcard/backup/efs ; then
